@@ -111,23 +111,15 @@ acs-*.bib
 *.glsdefs
 *.lzo
 *.lzs
-*.slg
-*.slo
-*.sls
 
 # uncomment this for glossaries-extra (will ignore makeindex's style files!)
 # *.ist
-
-# gnuplot
-*.gnuplot
-*.table
 
 # gnuplottex
 *-gnuplottex-*
 
 # gregoriotex
 *.gaux
-*.glog
 *.gtex
 
 # htlatex
@@ -143,8 +135,8 @@ acs-*.bib
 
 # knitr
 *-concordance.tex
-# TODO Uncomment the next line if you use knitr and want to ignore its generated tikz files
-# *.tikz
+# TODO Comment the next line if you want to keep your tikz graphics files
+*.tikz
 *-tikzDictionary
 
 # listings
@@ -174,9 +166,6 @@ _minted*
 # morewrites
 *.mw
 
-# newpax
-*.newpax
-
 # nomencl
 *.nlg
 *.nlo
@@ -195,9 +184,6 @@ _minted*
 
 # scrwfile
 *.wrt
-
-# svg
-svg-inkscape/
 
 # sympy
 *.sout
@@ -222,9 +208,6 @@ pythontex-files-*/
 *.dpth
 *.md5
 *.auxlock
-
-# titletoc
-*.ptc
 
 # todonotes
 *.tdo
@@ -272,10 +255,10 @@ TSWLatexianTemp*
 
 # gummi
 .*.swp
-
+.vscode
 # KBibTeX
 *~[0-9]*
-
+__pycache__/*
 # TeXnicCenter
 *.tps
 
@@ -291,11 +274,105 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
+Last login: Wed Mar 15 16:14:35 on ttys001
+Ali@JARVIS Spacecraft-Dynamics-and-Control % ls
+HW		LICENSE		README.md	Slides
+Ali@JARVIS Spacecraft-Dynamics-and-Control % ls -a
+.		.DS_Store	.gitignore	LICENSE		Slides
+..		.git		HW		README.md
+Ali@JARVIS Spacecraft-Dynamics-and-Control % nano .gitignore
+Ali@JARVIS Spacecraft-Dynamics-and-Control % nano .gitignore 
+Ali@JARVIS Spacecraft-Dynamics-and-Control % vim .gitig
+Ali@JARVIS Spacecraft-Dynamics-and-Control % vim .gitignore 
 
-# xwatermark package
-*.xwm
 
-# REVTeX puts footnotes in the bibliography by default, unless the nofootinbib
-# option is specified. Footnotes are the stored in a file with suffix Notes.bib.
-# Uncomment the next line to have this generated file ignored.
-#*Notes.bib
+
+
+
+
+
+
+
+
+
+
+
+
+.DS_Store
+.slprj
+*.slxc
+*/*/*/slprj/
+*.asv
+*.autosave
+#*.mat
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+## Intermediate documents:
+*.dvi
+".gitignore" 619L, 6549B                                      1,1           Top
+
+__pycache__/
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# Rope
+.ropeproject
+
+# Django stuff:
+*.log
+*.pot
+AOM.key
+AOM.pdf
+# Sphinx documentation
+docs/_build/
+myenv/
+.idea/
