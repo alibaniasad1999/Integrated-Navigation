@@ -93,7 +93,6 @@ The roll and pitch angles are calculated using the following equations:
 \subsection{Collecting data from the gyroscope sensor}
 \subsubsection{Gyroscope data rate}
 The gyroscope data rate is $0.01$ seconds.
-\subsubsection{Gyroscope data}
 
 \subsubsection{Gyroscope measurement mechanism in a MEMS accelerometer}
 A Microelectromechanical Systems (MEMS) gyroscope is a sensor designed to measure angular velocity. Unlike accelerometers that measure linear acceleration, a gyroscope senses rotational or angular motion.
@@ -190,5 +189,23 @@ Psi angle is shown in the figure \ref{fig:psi_angle} and \ref{fig:psi_angle_2}.
   \includegraphics[width=0.8\textwidth]{../Figure/Q1/psi_2}
   \caption{Psi angle in scenario II}
   \label{fig:psi_angle_2}
+\end{figure}
+
+\subsection{Collecting data from the GPS sensor}
+\subsubsection{GPS data rate}
+The gyroscope data rate is $1$ seconds.
+
+\subsubsection{Yas calculation using GPS data}
+The yaw angle is calculated using the following equation:
+\begin{equation}
+  \psi = \arctan{\left(\dfrac{v_e}{v_n}\right)}
+\end{equation}
+
+The yaw angle is shown in the figure \ref{fig:psi_angle_gps} and \ref{fig:psi_angle_gps_2}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{../Figure/Q1/psi_3}
+  \caption{Psi angle in scenario I}
+  \label{fig:psi_angle_gps}
 \end{figure}
 

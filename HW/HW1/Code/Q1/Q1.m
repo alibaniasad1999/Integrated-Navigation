@@ -113,5 +113,29 @@ else
     fprintf("Ooooooops\n")
 end
 
+%% d ----> III
+load('DataSet_02.mat')
+v_n = GPS_meas(:, 5);
+v_e = GPS_meas(:, 6);
+v_d = GPS_meas(:, 7);
+
+psi = atan2(v_e, v_n);
+
+set(gca, 'FontSize', 16)
+plot(GPS_meas(:, 1), psi, 'linewidth', 2);
+legend('psi', 'Location','northeast', 'FontSize', 20);
+
+set(gca, 'FontSize', 16, 'FontName', 'Times New Roman');
+xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
+ylabel('angle($rad$)', 'interpreter', 'latex', 'FontSize', 24);
+title('');
+axis tight
+[dir_state, ~, ~] = mkdir('../../Figure/Q1');
+if dir_state
+    print('../../Figure/Q1/psi_3','-depsc');
+else
+    fprintf("Ooooooops\n")
+end
+
 
 
