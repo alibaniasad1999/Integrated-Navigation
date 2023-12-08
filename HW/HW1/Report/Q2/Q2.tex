@@ -1,0 +1,60 @@
+\section{Calculation of Gravity}
+In this section, the gravity of Tehran is calculated with two methods.
+\subsection{First Method}
+In this method, the gravity is calculated with the following formula:
+\begin{equation}
+    g = g_0\dfrac{R_G^2}{(R_G+h)^2}
+\end{equation}
+where $g_0$ is calculated with the following formula:
+\begin{equation}
+    g_0 = 9.780327(1+0.0053024\sin^2(L)-0.0000058\sin^2(2L))
+\end{equation}
+and $R_G$ is the Guissian radius of the Earth.
+Lattitude of Tehran is $35.6892$ and the Guissian radius of the Earth is $R_G = 6367.449$.
+The gravity of Tehran is calculated as follows:
+\begin{equation}
+    g = 9.780327(1+0.0053024\sin^2(35.6892)-0.0000058\sin^2(2\times35.6892))\dfrac{6367.449^2}{(6367.449+1190)^2} = 9.806
+\end{equation}
+\subsection{Second Method}
+% J2 gravity model
+In this method, the gravity is calculated with the following formula:
+\begin{equation}
+    g = g_0(1+J_2\dfrac{R_E^2}{r^2}(1.5\sin^2\theta-0.5))
+\end{equation}
+The gravitational potential considering the \(J_2\) term is given by the formula:
+
+\[
+U(r, \theta, \lambda) = -\frac{GM}{r} \left[1 - J_2 \left(\frac{R}{r}\right)^2 \frac{3}{2} \left(1 - 5\sin^2\theta\right)\cos^2\lambda\right]
+\]
+
+Here:
+\begin{align*}
+& U(r, \theta, \lambda) \text{ is the gravitational potential}, \\
+& G \text{ is the gravitational constant}, \\
+& M \text{ is the mass of the Earth}, \\
+& R \text{ is the Earth's mean radius}, \\
+& r \text{ is the radial distance from the Earth's center}, \\
+& \theta \text{ is the colatitude (90 degrees minus latitude)}, \\
+& \lambda \text{ is the longitude}, \\
+& J_2 \text{ is the second zonal harmonic coefficient}.
+\end{align*}
+
+Now, for Tehran, let's calculate \(J_2\) at its location. Tehran's approximate geodetic coordinates are \(35.6895^\circ\) N latitude and \(51.3890^\circ\) E longitude.
+
+\begin{align*}
+& \sin^2 \theta = \sin^2 (90^\circ - 35.6895^\circ) \approx 0.2551, \\
+& \cos^2 \lambda = \cos^2(51.3890^\circ) \approx 0.3706.
+\end{align*}
+
+Now, substitute these values into the formula:
+
+\[
+J_2 \approx -\frac{C_2}{2} = -\frac{1}{2} \times 0.00108263 \approx -0.00054132
+\]
+
+Now, let's calculate the gravity at Tehran's location:
+
+\[
+g = g_0(1+J_2\dfrac{R_E^2}{r^2}(1.5\sin^2\theta-0.5)) = 9.780327(1-0.00054132\dfrac{6367.449^2}{(6367.449+1190)^2}(1.5\times0.2551-0.5)) = 9.806
+\]
+
