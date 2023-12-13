@@ -1,0 +1,75 @@
+\section{INS Mechanization in Wander Frame}
+The l-frame rotates continuously as it moves over the curved surface of the Earth because its y-axis always points toward the north (tangential to the meridian).
+The rate of rotation becomes ever greater as the l-frame approaches the pole and will become infinite if the l-frame passes directly over the pole.
+The rotational rate of the navigation l-frame over the Earth’s surface (known as the transport rate) is
+\begin{equation}
+    \omega_{el}^l = \begin{bmatrix}
+        \omega_e \\
+        \omega_n \\
+        \omega_u
+    \end{bmatrix}^l = \begin{bmatrix}
+        -\dfrac{v_n}{R_M + h} \\[1em]
+        \dfrac{v_e}{R_N + h} \\[1em]
+        \dfrac{v_e\tan(\phi)}{R_N + h}
+    \end{bmatrix}
+\end{equation}
+where $\omega_e$, $\omega_n$ and $\omega_u$ are the east, north and up angular velocity components.
+The transport rate is the rate at which the l-frame rotates relative to the e-frame.
+The angular rate vector of the wander frame with respect to the l-frame can be expressed (Jekeli 2001) as
+\begin{equation}
+    \omega_{wl}^l = \begin{bmatrix}
+        0\\
+        0\\
+        \dot \alpha
+    \end{bmatrix}
+\end{equation}
+and the angular rate of the wander frame with respect to the e-frame is
+\begin{equation}
+    \omega_{ew}^e = \omega_{lw}^l + \omega_{el}^l
+\end{equation}
+
+$$
+\omega_{ew}^e = \begin{bmatrix}
+    -\dot\phi \\
+    \dot\lambda \cos(\phi) \\
+    \dot\lambda \sin(\phi)
+\end{bmatrix} + \begin{bmatrix}
+    0\\
+    0\\
+    \dot \alpha
+\end{bmatrix} = \begin{bmatrix}
+    -\dot\phi \\
+    \dot\lambda \cos(\phi) \\
+    \dot\lambda \sin(\phi) + \dot \alpha
+\end{bmatrix}
+$$
+and therefore the rotation rate of the w-frame with respect to the e-frame, resolved in the w-frame, is
+\begin{equation}
+    \omega_{ew}^w = R_l^w \omega_{ew}^e 
+\end{equation}
+where $R_l^w$ is the rotation matrix from the l-frame to the w-frame.
+\begin{equation}
+    R_w^l = \begin{bmatrix}
+        \cos(\alpha) & -\sin(\alpha) & 0 \\
+        \sin(\alpha) & \cos(\alpha) & 0 \\
+        0 & 0 & 1
+    \end{bmatrix}
+\end{equation}
+To force the third component $\omega_u$ to be zero we must ensure that
+\begin{equation}
+    \dot \alpha = -\dot\lambda \sin(\phi)
+\end{equation}
+The mechanization equations are equivalent to those of the l-frame except that
+all the notations are for the w-frame rather than for the l-frame
+\begin{equation}
+    \begin{bmatrix}
+        \dot{\bm{r}}^w \\
+        \dot{\bm{v}}^w \\
+        \dot{\bm{R}}^w_b
+    \end{bmatrix}
+    = \begin{bmatrix}
+        D^{-1}\bm{v}^w \\[1em]
+        R^w_b\bm{f}^b - (2\Omega_{ie}^w + \Omega_{ew}^w)\times \bm{v}^w + \bm{g}^w \\[1em]
+        R^w_b(\bm{\Omega}_{ib}^b - \Omega_{iw}^b)
+    \end{bmatrix}
+\end{equation}
