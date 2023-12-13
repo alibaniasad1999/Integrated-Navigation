@@ -1,0 +1,28 @@
+\section{Cartesian expression and position angles}
+The solution is shown in the video.
+
+$$
+v_e = \begin{bmatrix}
+    \dot{x} \\
+    \dot{y} \\
+    \dot{z}
+\end{bmatrix} = 
+    \begin{bmatrix}
+        \cos(L(t))\cos(\lambda(t))\dfrac{\partial}{\partial t}h(t) - \cos(L(t))\sin(\lambda(t))(R+h(t))\dfrac{\partial}{\partial t}\lambda(t) - \sin(L(t))\cos(\lambda(t))(R+h(t))\dfrac{\partial}{\partial t}L(t) \\[1em]
+        \cos(L(t))\sin(\lambda(t))\dfrac{\partial}{\partial t}h(t) - \sin(L(t))\sin(\lambda(t))(R+h(t))\dfrac{\partial}{\partial t}L(t) + \cos(L(t))\cos(\lambda(t))(R+h(t))\dfrac{\partial}{\partial t}\lambda(t) \\[1em]
+        \sin(L(t))\dfrac{\partial}{\partial t}h(t) + \cos(L(t))(R+h(t))\dfrac{\partial}{\partial t}L(t)
+    \end{bmatrix}
+$$
+
+$$ C_{en}\left(\begin{array}{ccc}
+    -\sin \left(L\left(t\right)\right)\,\cos \left(\lambda \left(t\right)\right) & -\sin \left(L\left(t\right)\right)\,\sin \left(\lambda \left(t\right)\right) & \cos \left(L\left(t\right)\right)\\
+    -\sin \left(\lambda \left(t\right)\right) & \cos \left(\lambda \left(t\right)\right) & 0\\
+    -\cos \left(L\left(t\right)\right)\,\cos \left(\lambda \left(t\right)\right) & -\cos \left(L\left(t\right)\right)\,\sin \left(\lambda \left(t\right)\right) & -\sin \left(L\left(t\right)\right)
+    \end{array}\right)$$
+$$
+v_n = C_{en}v_e = \left(\begin{array}{c}
+    {\left(R+h\left(t\right)\right)}\,\dfrac{\partial }{\partial t}\;L\left(t\right)\\
+    \cos \left(L\left(t\right)\right)\,{\left(R+h\left(t\right)\right)}\,\dfrac{\partial }{\partial t}\;\lambda \left(t\right)\\
+    -\dfrac{\partial }{\partial t}\;h\left(t\right)
+    \end{array}\right)
+$$
