@@ -72,6 +72,14 @@ for i = 1:length(IMU_true)
     VDot(3,1)= -2*Omega_e*Vc(2,1)*CCLA - Vc(2,1)*Vc(2,1)/(RE+Pc(3,1))...
             -Vc(1,1)*Vc(1,1)/(RN+Pc(3,1));
     VDot = Fn+VDot+Gn;
+    
+    VDot(1,1) = Vc(1,i)*Vc(3,i)/(RN+Pc(3,i))-Vc(2,i)*Vc(2,i)*SCLA/((RE+Pc(3,i))*CCLA)...
+-2*Omega_e*Vc(2,i)*SCLA;
+VDot(2,1) = 2*Omega_e*Vc(1,i)*SCLA + Vc(1,i)*Vc(2,i)*SCLA/((RE+Pc(3,i))*CCLA)...
++2*Omega_e*Vc(3,i)*CCLA + Vc(2,i)*Vc(3,i)/(RE+Pc(3,i));
+VDot(3,1) = -2*Omega_e*Vc(2,i)*CCLA - Vc(2,i)*Vc(2,i)/(RE+Pc(3,i))...
+-Vc(1,i)*Vc(1,i)/(RN+Pc(3,i));
+VDot = Fn(:,i) + VDot + Gn;
     %% Calculating new linear velocity:euler discrtization
     Vc = Vc + VDot*DeltaT;
     %% Position Update:
