@@ -88,9 +88,9 @@ xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
 ylabel('latitude', 'interpreter', 'latex', 'FontSize', 24);
 title('');
 axis tight
-[dir_state, ~, ~] = mkdir('../../Figure/Q5');
+[dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../Figure/Q5/latitude','-depsc');
+    print('../../../Figure/Q5/latitude','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -108,9 +108,9 @@ xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
 ylabel('longitude', 'interpreter', 'latex', 'FontSize', 24);
 title('');
 axis tight
-[dir_state, ~, ~] = mkdir('../../Figure/Q5');
+[dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../Figure/Q5/longitude','-depsc');
+    print('../../../Figure/Q5/longitude','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -128,9 +128,9 @@ xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
 ylabel('altitude', 'interpreter', 'latex', 'FontSize', 24);
 title('');
 axis tight
-[dir_state, ~, ~] = mkdir('../../Figure/Q5');
+[dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../Figure/Q5/altitude','-depsc');
+    print('../../../Figure/Q5/altitude','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -148,9 +148,9 @@ xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
 ylabel('velocity in x', 'interpreter', 'latex', 'FontSize', 24);
 title('');
 axis tight
-[dir_state, ~, ~] = mkdir('../../Figure/Q5');
+[dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../Figure/Q5/velocity_x','-depsc');
+    print('../../../Figure/Q5/velocity_x','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -167,9 +167,9 @@ xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
 ylabel('velocity in y', 'interpreter', 'latex', 'FontSize', 24);
 title('');
 axis tight
-[dir_state, ~, ~] = mkdir('../../Figure/Q5');
+[dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../Figure/Q5/velocity_y','-depsc');
+    print('../../../Figure/Q5/velocity_y','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -187,9 +187,9 @@ xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
 ylabel('velocity in z', 'interpreter', 'latex', 'FontSize', 24);
 title('');
 axis tight
-[dir_state, ~, ~] = mkdir('../../Figure/Q5');
+[dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../Figure/Q5/velocity_z','-depsc');
+    print('../../../Figure/Q5/velocity_z','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -207,9 +207,9 @@ xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
 ylabel('$\phi$', 'interpreter', 'latex', 'FontSize', 24);
 title('');
 axis tight
-[dir_state, ~, ~] = mkdir('../../Figure/Q5');
+[dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../Figure/Q5/phi','-depsc');
+    print('../../../Figure/Q5/phi','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -227,9 +227,9 @@ xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
 ylabel('$\theta$', 'interpreter', 'latex', 'FontSize', 24);
 title('');
 axis tight
-[dir_state, ~, ~] = mkdir('../../Figure/Q5');
+[dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../Figure/Q5/theta','-depsc');
+    print('../../../Figure/Q5/theta','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -248,9 +248,9 @@ xlabel('time(sec)', 'interpreter', 'latex', 'FontSize', 24);
 ylabel('$\psi$', 'interpreter', 'latex', 'FontSize', 24);
 title('');
 axis tight
-[dir_state, ~, ~] = mkdir('../../Figure/Q5');
+[dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../Figure/Q5/psi','-depsc');
+    print('../../../Figure/Q5/psi','-depsc');
 else
     fprintf("Ooooooops\n")
 end
