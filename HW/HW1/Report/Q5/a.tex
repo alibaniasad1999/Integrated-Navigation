@@ -22,7 +22,7 @@ $\omega_{ib}^b$ is the angular velocity of the body with respect to the inertial
 \[
     \omega_{en}^n = \begin{bmatrix}
         \dfrac{v_e}{R_p+h} \\[1em]
-        -\dfrac{v_n}{R_g+h} \\[1em]
+        -\dfrac{v_n}{R_m+h} \\[1em]
         -\dfrac{v_e\tan\phi}{R_p+h}
     \end{bmatrix}
 \]
@@ -56,7 +56,7 @@ Acceleration of the body in the inertial frame:
 \[
     F_n = \bm{C}_b^n F_b
 \]
-Gravity in navigation frame:
+Gravity in the navigation frame:
 \[
     g_n = \begin{bmatrix}
         0 \\
@@ -65,7 +65,7 @@ Gravity in navigation frame:
     \end{bmatrix}
 \]
 \[
-    \dfrac{g_n}{(1 + h/R_g)^2} 
+    F_g = \dfrac{g_n}{(1 + h/R_g)^2} 
 \]
 correction terms:
 \[

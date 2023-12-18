@@ -52,7 +52,7 @@ for i = 1:length(IMU_true)
     %% correction terms
     correction = cross(2*omega_i_e_n+omega_e_n_n, velocity);
     %% Calculating Acceleration at navigation frame
-    F = Fn + Fg - correction;
+       = Fn + Fg - correction;
     %% Calculating Velocity at navigation frame
     velocity_rate = F;
     %% Calculating Position at navigation frame
