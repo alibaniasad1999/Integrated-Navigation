@@ -38,7 +38,12 @@ for i = 1:length(IMU_true)
         -velocity(1)/(R_m+position(3));...
         -velocity(2)*tan(position(1))/(R_m+position(3))];
     omega_i_n_n = omega_i_e_n + omega_e_n_n;
-    Cbn_rate = Cbn*skew_symmetric(wib) - skew_symmetric(omega_i_n_n)*Cbn;
+    Cbn = Cbn_calculation(attitude);
+    omega_n_b_b = wib - Cbn'*omega_i_n_n;
+    %% Calculating Angular rate at navigation frame
+    attitude_rate = [1, sin(attitude(1))*tan(attitude(2)), cos(attitude(1))*tan(attitude(2));
+        0, cos(attitude(1)), -sin(attitude(1));
+        0, sin(attitude(1))/cos(attitude(2)), cos(attitude(1))/cos(attitude(2))]*omega_n_b_b;
     %% Calculating Acceleration at body frame
     Fn = Cbn*Fb;
     %% Calculating Acceleration at navigation frame
@@ -56,7 +61,7 @@ for i = 1:length(IMU_true)
         -sin(position(1)), -cos(position(1))*sin(position(2)), cos(position(1))*cos(position(2))];
     Cen_rate = - skew_symmetric(omega_e_n_n)*Cen;
     %% integral
-    Cbn = Cbn + Cbn_rate*dt;
+    attitude = attitude + attitude_rate*dt;
     velocity = velocity + velocity_rate*dt;
     Cen = Cen + Cen_rate*dt;
     position(1) = acos(Cen(1, 1));
@@ -69,10 +74,8 @@ for i = 1:length(IMU_true)
     % attitude_array(i, 1) = acos(Cbn(3, 3)/cos(attitude_array(i, 2)))*sign(Cbn(3, 2)); % phi
     % attitude_array(i, 3) = acos(Cbn(1, 1)/cos(attitude_array(i, 2)))*sign(Cbn(2, 1)); % psi
     % DCM to Euler angle matlab function
-    attitude_array(i, :) = flip(rotm2eul(Cbn, 'ZYX'));
+    attitude_array(i, :) = attitude';
 end
-
-% plot phi
 figure(1)
 set(gca, 'FontSize', 16)
 hold on;
@@ -87,7 +90,7 @@ title('');
 axis tight
 [dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../../Figure/Q5/latitude_cos','-depsc');
+    print('../../../Figure/Q5/latitude','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -107,7 +110,7 @@ title('');
 axis tight
 [dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../../Figure/Q5/longitude_cos','-depsc');
+    print('../../../Figure/Q5/longitude','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -127,7 +130,7 @@ title('');
 axis tight
 [dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../../Figure/Q5/altitude_cos','-depsc');
+    print('../../../Figure/Q5/altitude','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -147,7 +150,7 @@ title('');
 axis tight
 [dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../../Figure/Q5/velocity_x_cos','-depsc');
+    print('../../../Figure/Q5/velocity_x','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -166,7 +169,7 @@ title('');
 axis tight
 [dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../../Figure/Q5/velocity_y_cos','-depsc');
+    print('../../../Figure/Q5/velocity_y','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -186,7 +189,7 @@ title('');
 axis tight
 [dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../../Figure/Q5/velocity_z_cos','-depsc');
+    print('../../../Figure/Q5/velocity_z','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -206,7 +209,7 @@ title('');
 axis tight
 [dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../../Figure/Q5/phi_cos','-depsc');
+    print('../../../Figure/Q5/phi','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -226,7 +229,7 @@ title('');
 axis tight
 [dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../../Figure/Q5/theta_cos','-depsc');
+    print('../../../Figure/Q5/theta','-depsc');
 else
     fprintf("Ooooooops\n")
 end
@@ -247,10 +250,12 @@ title('');
 axis tight
 [dir_state, ~, ~] = mkdir('../../../Figure/Q5');
 if dir_state
-    print('../../../Figure/Q5/psi_cos','-depsc');
+    print('../../../Figure/Q5/psi','-depsc');
 else
     fprintf("Ooooooops\n")
 end
+
+
 
 
 %% Cbn calculationz
