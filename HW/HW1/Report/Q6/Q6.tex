@@ -1,0 +1,17 @@
+\section{Linearization of INS inertial navigation system}
+\[
+    \bm{\dot{C}}_e^n = -\Omega_{en}^n \bm{C}_e^n
+\]
+\[
+    \delta\bm{\dot{C}}_e^n = -\Omega_{en}^n \delta\bm{C}_e^n + \delta\bm{\Omega}_{en}^n \bm{C}_e^n
+\]
+\[
+\dot{M}\bm{C}_e^n - M\bm{\dot{C}}_e^n \Omega_{ne}^e = -\delta\bm{\Omega}_{en}^n \bm{C}_e^n - \bm{\Omega}_{en}^n \delta\bm{C}_e^n = -\delta\bm{\Omega}_{en}^n \bm{C}_e^n + \bm{\Omega}_{en}^n M \bm{C}_e^n 
+\]
+\[
+    \dot{M} \bm{C}_e^n - M \bm{\dot{C}}_e^n = -\delta\bm{\Omega}_{en}^n \bm{C}_e^n 
+     + \bm{\Omega}_{en}^n M \bm{C}_e^n
+\]
+\[
+\dot{M} = M \bm{\dot{C}}_e^n \bm{C}_n^e - \delta{\bm{\Omega}}_{en}^n + \bm{\Omega}_{en}^n M
+\]

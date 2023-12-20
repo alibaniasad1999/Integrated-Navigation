@@ -12,7 +12,7 @@ x = [phi theta psi v_n v_e v_d L lambda h]';
 u = [w_x w_y w_z a_x a_y a_z]';
 % state vector derivative
 omega_ie_n = [Omega_e*cos(L); 0; -Omega_e*sin(L)];
-omega_en_n = [v_e/(R_p+h); -v_n/(R_m+h); -v_e*tan(L)/(R_m+h)];
+omega_en_n = [v_e/(R_p+h); -v_n/(R_m+h); -v_e*tan(L)/(R_p+h)];
 omega_in_n = omega_ie_n + omega_en_n;
 C_nb = [cos(theta)*cos(psi), cos(theta)*sin(psi), -sin(theta);
 -cos(phi)*sin(psi)+sin(phi)*sin(theta)*cos(psi),...
@@ -80,8 +80,8 @@ for i = 1:length(IMU_true)
     velocity = x(4:6);
     position = x(7:9);
     out_profile(i, :) = [position', velocity', attitude'];
-    % A = A_matrix(x, u, g, R_m, R_p, R_G, Omega_e);
-    % B = B_matrix(x, u, g, R_m, R_p, R_G, Omega_e);
+    A = A_matrix(x, u, g, R_m, R_p, R_G, Omega_e);
+    B = B_matrix(x, u, g, R_m, R_p, R_G, Omega_e);
     x = x + A*x*dt + B*u*dt;
 end
 %% plot
