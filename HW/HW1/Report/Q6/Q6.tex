@@ -3,15 +3,63 @@
     \bm{\dot{C}}_e^n = -\Omega_{en}^n \bm{C}_e^n
 \]
 \[
-    \delta\bm{\dot{C}}_e^n = -\Omega_{en}^n \delta\bm{C}_e^n + \delta\bm{\Omega}_{en}^n \bm{C}_e^n
+\delta \dot{\bm{C}}_e^n = -\delta \bm{\Omega}_{en}^n\bm{C}_e^n - \Omega_{en}^n \delta \bm{C}_e^n
 \]
 \[
-\dot{M}\bm{C}_e^n - M\bm{\dot{C}}_e^n \Omega_{ne}^e = -\delta\bm{\Omega}_{en}^n \bm{C}_e^n - \bm{\Omega}_{en}^n \delta\bm{C}_e^n = -\delta\bm{\Omega}_{en}^n \bm{C}_e^n + \bm{\Omega}_{en}^n M \bm{C}_e^n 
+    -\dot{M} \bm{C}_e^n - M \dot{\bm{C}}_e^n = -\delta \bm{\Omega}_{en}^n\bm{C}_e^n - \Omega_{en}^n \delta \bm{C}_e^n
 \]
 \[
-    \dot{M} \bm{C}_e^n - M \bm{\dot{C}}_e^n = -\delta\bm{\Omega}_{en}^n \bm{C}_e^n 
-     + \bm{\Omega}_{en}^n M \bm{C}_e^n
+    -\dot{M} \bm{C}_e^n + M \Omega_{en}^n \bm{C}_e^n = -\delta \bm{\Omega}_{en}^n\bm{C}_e^n - \Omega_{en}^n \delta \bm{C}_e^n
 \]
 \[
-\dot{M} = M \bm{\dot{C}}_e^n \bm{C}_n^e - \delta{\bm{\Omega}}_{en}^n + \bm{\Omega}_{en}^n M
+    \dot{M} - M \Omega_{en}^n = \delta \bm{\Omega}_{en}^n - \Omega_{en}^n (-M\bm{C}_e^n)(-C_n^e)
+\]
+\[
+    \dot{M} - M \Omega_{en}^n = \delta \bm{\Omega}_{en}^n - \Omega_{en}^n M
+\]
+\[
+    \dot{m} = m\times[\omega_{en}^n ] + \delta \bm{\omega}_{en}^n
+\]
+\[
+    m = \begin{bmatrix}
+        \delta \alpha \\
+        \delta \beta \\
+        \delta \gamma
+    \end{bmatrix}, \delta \bm{\omega}_{en}^n = \begin{bmatrix}
+        \delta \omega_x \\
+        \delta \omega_y \\
+        \delta \omega_z
+    \end{bmatrix}
+\]
+\[
+    \begin{bmatrix}
+        \dot{\delta \alpha} \\
+        \dot{\delta \beta} \\
+        \dot{\delta \gamma}
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        \delta \alpha \\
+        \delta \beta \\
+        \delta \gamma
+    \end{bmatrix} \times \begin{bmatrix}
+        \omega_x \\
+        \omega_y \\
+        \omega_z
+    \end{bmatrix} + \begin{bmatrix}
+        \delta \omega_x \\
+        \delta \omega_y \\
+        \delta \omega_z
+    \end{bmatrix}
+\]
+
+\[
+    \begin{bmatrix}
+        \dot{\delta \alpha} \\
+        \dot{\delta \beta} \\
+        \dot{\delta \gamma}
+    \end{bmatrix} = \begin{bmatrix}
+        \beta z - \gamma y + \delta \omega_x \\
+        \gamma x - \alpha z + \delta \omega_y \\
+        \alpha y - \beta x + \delta \omega_z
+    \end{bmatrix}
 \]
