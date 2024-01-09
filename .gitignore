@@ -11,6 +11,7 @@
 *.cb
 *.cb2
 .*.lb
+Video/
 slprj/
 ## Intermediate documents:
 *.dvi
