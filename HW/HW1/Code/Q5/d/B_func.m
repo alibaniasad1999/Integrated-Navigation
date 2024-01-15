@@ -1,4 +1,4 @@
-function out1 = B_func(in1,in2)
+function out1 = B_func(in1,~)
 %B_func
 %    OUT1 = B_func(IN1,IN2)
 
