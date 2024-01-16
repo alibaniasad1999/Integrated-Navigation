@@ -1,113 +1,107 @@
-clc;
-clear;
-%% state space %%
-syms x1 x2 x3 x4 x5 u
-% states 1 ---> height
-% states 2 ---> velocity
-% states 3 ---> bias
-% states 4 ---> a0
-% states 5 ---> a1
-% constant
-h_r = 0.013;
-R = 0.0333;
-m = 0.063;
-%% state space
-f1 = x2;
-z = x1 + x3;
-h_bar = (-z + h_r)/(2.5*R);
-K_G = x4 + x5*(2/h_bar)^2;
-f2 = -9.81 - K_G/m*u;
-f3 = 0;
-f4 = 0;
-f5 = 0;
-f = [f1;f2;f3;f4;f5];
-x = [x1;x2;x3;x4;x5];
-%% particle filter %%
-% initial condition
-x0 = [0;0;0;0;0];
-% noise
-Q = diag([0.0001,0.0001,0.0001,0.0001,0.0001]);
-R = 0.0001;
-% time
-dt = 0.01;
-t = 0:dt:10;
-% input
-u = 0.5*ones(1,length(t));
-% measurement
-y = zeros(1,length(t));
-% initial condition
-x_hat = zeros(5,length(t));
-x_hat(:,1) = x0;
-P = zeros(5,5,length(t));
-P(:,:,1) = diag([0.0001,0.0001,0.0001,0.0001,0.0001]);
-% particle
-N = 1000;
-x_hat_particle = zeros(5,N,length(t));
-x_hat_particle(:,1,:) = repmat(x0,1,N);
-w = zeros(N,length(t));
-w(:,1) = 1/N*ones(N,1);
-% particle filter
-for i = 2:length(t)
-    % state space
-    x_hat(:,i) = x_hat(:,i-1) + dt*f;
-    % measurement
-    y(i) = x_hat(1,i) + sqrt(R)*randn;
-    % particle filter
-    for j = 1:N
-        % state space
-        x_hat_particle(:,j,i) = x_hat_particle(:,j,i-1) + dt*f + sqrt(Q)*randn(5,1);
-        % measurement
-        y_particle = x_hat_particle(1,j,i) + sqrt(R)*randn;
-        % weight
-        w(j,i) = w(j,i-1)*exp(-1/2*(y(i)-y_particle)^2/R);
-    end
-    % normalize
-    w(:,i) = w(:,i)/sum(w(:,i));
-    % resampling
-    index = randsample(1:N,N,true,w(:,i));
-    x_hat_particle(:,:,i) = x_hat_particle(:,index,i);
-    w(:,i) = 1/N*ones(N,1);
+clc
+close all
+%%
+tf=20;
+Ts=0.01;
+x = [-2;0;0.2;0.9621;0.03794];
+P = 1e-2*eye(5);
+R=1;
+Q=0.002;
+xhat=x;
+%%
+N=100;
+xpart = zeros(5, N);
+% Initialize the particle filter.
+for i = 1 : N
+    xpart(:, i) = x + sqrt(P) * randn(5, 1);
 end
-%% plot
+%%
+tnew=[0];
+xnew=[x];
+xhatnew=[xhat];
+P11new=[P(1,1)];
+xhatpfnew=[x];
+xpartminus = zeros(5, N);
+%%
+out = sim('Quad_IGE_Landing');
+%% load data u and z %%
+%% run simulink %%
+u_in = out.u.Data;
+zm = out.zm.Data; % measurement
+for t=1:length(zm)
+% %% System 
+%    x=0.5*x+25*x/(1+x^2)+8*cos(1.2*(t))+sqrt(Q)*randn;
+%    ym=x^2/20+sqrt(R)*randn;
+% %% kf
+% xhat=0.5*xhat+25*xhat/(1+xhat^2)+8*cos(1.2*t);
+% F=0.5+25*(1-xhat^2)/((1+xhat^2)^2);
+% P=F*P*F'+Q;
+% C=xhat/10;
+% K=P*C'*inv(C*P*C'+R);
+% yhat=xhat^2/20;
+% xhat=xhat+K*(ym-yhat);
+% P=(eye(1)-K*C)*P*(eye(1)-K*C)'+K*R*K';
+%% PF
+% Particle filter
+for i = 1 : N
+    x1 = xpart(1, i);
+    x2 = xpart(2, i);
+    x3 = xpart(3, i);
+    x4 = xpart(4, i);
+    x5 = xpart(5, i);
+    h_r = 0.013;
+    R_r = 0.0333;
+    m = 0.063;
+    %% state space
+    f1 = x2;
+    zm_in = x1 + x3;
+    h_bar = (-zm_in + h_r)/(2.5*R_r);
+    K_G = x4 + x5*(2/h_bar)^2;
+    f2 = 9.81 - K_G/m*u_in(t);
+    f3 = 0;
+    f4 = 0;
+    f5 = 0;
+    f = [f1;f2;f3;f4;f5];
+    xpart(:, i) = xpart(:, i) + f * Ts;
+    xpartminus(:,i) = xpart(i);
+    ypart = [1 0 0 0 0] * xpartminus(:,i);
+    vhat = zm(t) - ypart;
+    q(i) = (1 / sqrt(R) / sqrt(2*pi)) * exp(-vhat^2 / 2 / R);
+end
+% Normalize the likelihood of each a priori estimate.
+    qsum = sum(q);
+    for i = 1 : N
+        q(i) = q(i) / qsum;
+    end
+%
+ % Resample.
+    for i = 1 : N
+        u = rand; % uniform random number between 0 and 1
+        qtempsum = 0;
+        for j = 1 : N
+            qtempsum = qtempsum + q(j);
+            if qtempsum >= u
+                xpart(i) = xpartminus(j);
+                break;
+            end
+        end
+    end
+% The particle filter estimate is the mean of the particles.
+xhatPart = mean(xpart,2);
+%%
+tnew=[tnew t];
+xnew=[xnew x];
+xhatnew=[xhatnew xhat];
+P11new=[P11new P(1,1)];
+%%
+xhatpfnew=[xhatpfnew xhatPart];
+end
+%%
 figure(1)
-plot(t,x_hat(1,:),'b','linewidth',2)
-hold on
-plot(t,y,'r','linewidth',2)
-plot(t,x_hat_particle(1,:,end),'k','linewidth',2)
-xlabel('time')
-ylabel('height')
-legend('state space','measurement','particle filter')
-figure(2)
-plot(t,x_hat(2,:),'b','linewidth',2)
-hold on
-plot(t,x_hat_particle(2,:,end),'k','linewidth',2)
-xlabel('time')
-ylabel('velocity')
-legend('state space','particle filter')
-figure(3)
-plot(t,x_hat(3,:),'b','linewidth',2)
-hold on
-plot(t,x_hat_particle(3,:,end),'k','linewidth',2)
-xlabel('time')
-ylabel('bias')
-legend('state space','particle filter')
-figure(4)
-plot(t,x_hat(4,:),'b','linewidth',2)
-hold on
-plot(t,x_hat_particle(4,:,end),'k','linewidth',2)
-xlabel('time')
-ylabel('a0')
-legend('state space','particle filter')
-figure(5)
-plot(t,x_hat(5,:),'b','linewidth',2)
-hold on
-plot(t,x_hat_particle(5,:,end),'k','linewidth',2)
-xlabel('time')
-ylabel('a1')
-legend('state space','particle filter')
-figure(6)
-plot(t,w(:,end),'k','linewidth',2)
-xlabel('time')
-ylabel('weight')
-legend('particle filter')
+plot(tnew,xnew(1,:),'k',tnew,xhatpfnew(1,:),'b.');
+%
+
+
+% % figure(2)
+% % plot(tnew,P11new,'k');
 

@@ -1,7 +1,7 @@
 clc;
 clear;
 %% state space %%
-syms x1 x2 x3 x4 x5 u
+syms x1 x2 x3 x4 x5 u real % x1,x2,x3,x4,x5 are real
 % states 1 ---> height
 % states 2 ---> velocity
 % states 3 ---> bias
@@ -9,94 +9,127 @@ syms x1 x2 x3 x4 x5 u
 % states 5 ---> a1
 % constant
 h_r = 0.013;
-R = 0.0333;
+R_r = 0.0333;
 m = 0.063;
 %% state space
 f1 = x2;
-z = x1 + x3;
-h_bar = (-z + h_r)/(2.5*R);
+zm = x1 + x3;
+h_bar = (-zm + h_r)/(2.5*R_r);
 K_G = x4 + x5*(2/h_bar)^2;
-f2 = -9.81 - K_G/m*u;
+f2 = 9.81 - K_G/m*u;
 f3 = 0;
 f4 = 0;
 f5 = 0;
 f = [f1;f2;f3;f4;f5];
+% make function for f
 x = [x1;x2;x3;x4;x5];
+matlabFunction(f,'File','f_func','Vars',{x,u});
 %% ekf %%
-%% constant %%
-Q = 1*eye(5);
-R = 0.1;
 %% initial %%
-x0 = [0;0;0;0;0];
-P0 = 0.1*eye(5);
-%% loas data u and z %%
-load('u.mat');
-load('z.mat');
+x0 = [-2;0;0.2;0.9621;0.03794];
+P0 = 1e-2*eye(5);
+out = sim('Quad_IGE_Landing');
+%% constant %%
+Q = 1e-9*eye(5);
+R = 1e-2;
+%% load data u and z %%
+%% run simulink %%
+u_in = out.u.Data;
+zm = out.zm.Data; % measurement
 dt = 0.01;
-T = 0:dt:10;
+T = 0:dt:20;
 x_hat_save = zeros(5,length(T));
 P_save = zeros(5,5,length(T));
 %% ekf %%
 x_hat = x0;
 P = P0;
+A = jacobian(f,x);
+% make A function
+matlabFunction(A,'File','A_func','Vars',{x,u});
+A_s = A_func(x_hat,u_in(1));
+F = eye(5) + dt*A_s;
+h_hat_array = zeros(5,length(T));
 for i = 1:length(T)
     % prediction
-    x_hat = x_hat + dt*subs(f,x,x_hat);
-    A = jacobian(f,x);
-    P = P + dt*(A*P + P*A' + Q);
+    x_dot = f_func(x_hat,u_in(1));
+    x_hat = x_hat + dt*x_dot;
+    % save h_hat 
+    h_hat_array(:,i) = double(vpa(x_hat));
+    P = F*P*F' + Q;
     % update
-    y = z(i) - x_hat(1);
-    C = jacobian(y,x);
-    S = C*P*C' + R;
-    K = P*C'/S;
-    x_hat = x_hat + K*y;
-    P = P - K*S*K';
+    H = [1 0 0 0 0];
+    z = H*x_hat;
+    K = P*H'/(H*P*H' + R);
+    x_hat = x_hat + K*(zm(i) - z);
+    P = (eye(5) - K*H)*P*(eye(5) - K*H)' + K*R*K';
     % save
-    x_hat_save(:,i) = x_hat;
-    P_save(:,:,i) = P;
+    x_hat_save(:,i) = double(vpa(x_hat));
+    P_save(:,:,i) = double(vpa(P));
+    % write bar progress of simulation to command window
+    clc;
+    fprintf('%.2f%%\n',i/length(T)*100);
 end
-%% plot %%
+%% plot
 figure(1)
-plot(T,x_hat_save(1,:),'r','linewidth',2);
-hold on;
-plot(T,z,'b','linewidth',2);
-xlabel('time(s)');
-ylabel('height(m)');
-legend('estimate','measurement');
+plot(T,x_hat_save(1,:),'LineWidth',2)
+hold on
+plot(T,out.zm.Data,'LineWidth',2)
+plot(T,h_hat_array(1,:),'LineWidth',2)
+plot(T,out.z.Data,'LineWidth',2)
+grid on
+xlabel('Time [s]')
+ylabel('Height [m]')
+legend('Estimation','True')
 figure(2)
-plot(T,x_hat_save(2,:),'r','linewidth',2);
-xlabel('time(s)');
-ylabel('velocity(m/s)');
+plot(T,x_hat_save(2,:),'LineWidth',2)
+xlabel('Time [s]')
+ylabel('Velocity [m/s]')
+grid on
 figure(3)
-plot(T,x_hat_save(3,:),'r','linewidth',2);
-xlabel('time(s)');
-ylabel('bias');
+plot(T,x_hat_save(3,:),'LineWidth',2)
+xlabel('Time [s]')
+ylabel('Bias [m]')
+grid on
 figure(4)
-plot(T,x_hat_save(4,:),'r','linewidth',2);
-xlabel('time(s)');
-ylabel('a0');
+plot(T,x_hat_save(4,:),'LineWidth',2)
+xlabel('Time [s]')
+ylabel('a0 [m/s^2]')
+grid on
 figure(5)
-plot(T,x_hat_save(5,:),'r','linewidth',2);
-xlabel('time(s)');
-ylabel('a1');
+plot(T,x_hat_save(5,:),'LineWidth',2)
+xlabel('Time [s]')
+ylabel('a1 [m/s^2]')
+grid on
+%% plot P
 figure(6)
-plot(T,P_save(1,1,:),'r','linewidth',2);
-xlabel('time(s)');
-ylabel('P11');
-figure(7)
-plot(T,P_save(2,2,:),'r','linewidth',2);
-xlabel('time(s)');
-ylabel('P22');
-figure(8)
-plot(T,P_save(3,3,:),'r','linewidth',2);
-xlabel('time(s)');
-ylabel('P33');
-figure(9)
-plot(T,P_save(4,4,:),'r','linewidth',2);
-xlabel('time(s)');
-ylabel('P44');
-figure(10)
-plot(T,P_save(5,5,:),'r','linewidth',2);
-xlabel('time(s)');
-ylabel('P55');
+subplot(2,3,1)
+plot(T,squeeze(P_save(1,1,:)),'LineWidth',2)
+xlabel('Time [s]')
+ylabel('P11')
+grid on
+subplot(2,3,2)
+plot(T,squeeze(P_save(2,2,:)),'LineWidth',2)
+xlabel('Time [s]')
+ylabel('P22')
+grid on
+subplot(2,3,3)
+plot(T,squeeze(P_save(3,3,:)),'LineWidth',2)
+xlabel('Time [s]')
+ylabel('P33')
+grid on
+subplot(2,3,4)
+plot(T,squeeze(P_save(4,4,:)),'LineWidth',2)
+xlabel('Time [s]')
+ylabel('P44')
+grid on
+subplot(2,3,5)
+plot(T,squeeze(P_save(5,5,:)),'LineWidth',2)
+xlabel('Time [s]')
+ylabel('P55')
+grid on
+subplot(2,3,6)
+plot(T,squeeze(P_save(1,2,:)),'LineWidth',2)
+xlabel('Time [s]')
+ylabel('P12')
+grid on
 
