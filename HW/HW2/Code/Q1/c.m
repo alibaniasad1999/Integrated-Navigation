@@ -27,11 +27,11 @@ matlabFunction(f,'File','f_func','Vars',{x,u});
 %% ekf %%
 %% initial %%
 x0 = [-2;0;0.2;0.9621;0.03794];
-P0 = 1e-2*eye(5);
+P0 = 1e-5*eye(5);
 out = sim('Quad_IGE_Landing');
 %% constant %%
 Q = 1e-9*eye(5);
-R = 1e-2;
+R = 1e-1;
 %% load data u and z %%
 %% run simulink %%
 u_in = out.u.Data;

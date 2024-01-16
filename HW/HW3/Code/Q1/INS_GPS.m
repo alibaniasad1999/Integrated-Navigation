@@ -1,7 +1,5 @@
 clc;
 clear;
-global P_GPS
-P_GPS = 0.01*eye(9);
 %% INS equation with the source term
 %% load data
 load('DataSet_02.mat');
@@ -76,26 +74,17 @@ for i = 1:length(IMU_true)
         R_p = 6356752.3142;
         R_g = 6371008.7714;
         Omega_e = 7.292116e-5;
-        x = [position; velocity; attitude];
-        u = [Fb; wib];
-        A = A_func(x, u);
-        B = B_func(x, u);
-        F = eye(9) + dt*A;
-        % x = F*[position; velocity; attitude];
-        % position = x(1:3);
-        % velocity = x(4:6);
-        % attitude = x(7:9);
+        A = A_matrix(x, u, g, R_m, R_p, R_g, Omega_e);
+        B = B_matrix(x, u, g, R_m, R_p, R_g, Omega_e);
         GPS = GPS_meas(i/100, 2:end)';
-        d_GPS = GPS - [position; velocity];
-        [d_position, d_velocity, d_attitude] = GPS_INS_KF(position, velocity, attitude, A, B, d_GPS, dt);
-        position = position + d_position;
-        velocity = velocity + d_velocity;
-        attitude = attitude + d_attitude;
+        [position, velocity, attitude] = GPS_INS_KF(position, velocity, attitude, A, B, GPS, dt);
     end
     %% save data
     position_array(i, :) = position';
     velocity_array(i, :) = velocity';
     attitude_array(i, :) = attitude';
+    %% add INS-GPS
+
 end
 % figure(1)
 % set(gca, 'FontSize', 16)
@@ -155,85 +144,6 @@ ylabel('altitude', 'interpreter', 'latex', 'FontSize', 24);
 title('');
 axis tight
 
-figure(4)
-set(gca, 'FontSize', 16)
-hold on;
-plot(in_profile(:, 1), in_profile(:, 5), 'LineWidth', 2, 'Color','r');
-plot(in_profile(1:end-1, 1), velocity_array(:, 1), 'LineWidth', 2,...
-    'Color','k', 'linestyle', '--');
-legend('true', 'estimated');
-set(gca, 'FontSize', 16, 'FontName', 'Times New Roman');
-xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
-ylabel('velocity in x', 'interpreter', 'latex', 'FontSize', 24);
-title('');
-axis tight
-
-figure(5)
-set(gca, 'FontSize', 16)
-hold on;
-plot(in_profile(:, 1), in_profile(:, 6), 'LineWidth', 2, 'Color','r');
-plot(in_profile(1:end-1, 1), velocity_array(:, 2), 'LineWidth', 2,...
-    'Color','k', 'linestyle', '--');
-legend('true', 'estimated');
-set(gca, 'FontSize', 16, 'FontName', 'Times New Roman');
-xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
-ylabel('velocity in y', 'interpreter', 'latex', 'FontSize', 24);
-title('');
-axis tight
-
-figure(6)
-set(gca, 'FontSize', 16)
-hold on;
-plot(in_profile(:, 1), in_profile(:, 7), 'LineWidth', 2, 'Color','r');
-plot(in_profile(1:end-1, 1), velocity_array(:, 3), 'LineWidth', 2,...
-    'Color','k', 'linestyle', '--');
-legend('true', 'estimated');
-set(gca, 'FontSize', 16, 'FontName', 'Times New Roman');
-xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
-ylabel('velocity in z', 'interpreter', 'latex', 'FontSize', 24);
-title('');
-axis tight
-
-figure(7)
-set(gca, 'FontSize', 16)
-hold on;
-plot(in_profile(:, 1), in_profile(:, 8), 'LineWidth', 2, 'Color','r');
-plot(in_profile(1:end-1, 1), attitude_array(:, 1), 'LineWidth', 2,...
-    'Color','k', 'linestyle', '--');
-legend('true', 'estimated');
-set(gca, 'FontSize', 16, 'FontName', 'Times New Roman');
-xlabel('time($\sec)$', 'interpreter', 'latex', 'FontSize', 24);
-ylabel('$\phi$', 'interpreter', 'latex', 'FontSize', 24);
-title('');
-axis tight
-
-figure(8)
-set(gca, 'FontSize', 16)
-hold on;
-plot(in_profile(:, 1), in_profile(:, 9), 'LineWidth', 2, 'Color','r');
-plot(in_profile(1:end-1, 1), attitude_array(:, 2), 'LineWidth', 2,...
-    'Color','k', 'linestyle', '--');
-legend('true', 'estimated');
-set(gca, 'FontSize', 16, 'FontName', 'Times New Roman');
-xlabel('time(sec)', 'interpreter', 'latex', 'FontSize', 24);
-ylabel('$\theta$', 'interpreter', 'latex', 'FontSize', 24);
-title('');
-axis tight
-
-figure(9)
-set(gca, 'FontSize', 16)
-hold on;
-plot(in_profile(:, 1), in_profile(:, 10), 'LineWidth', 2, 'Color','r');
-plot(in_profile(1:end-1, 1), attitude_array(:, 3), 'LineWidth', 2,...
-    'Color','k', 'linestyle', '--');        
-legend('true', 'estimated');
-set(gca, 'FontSize', 16, 'FontName', 'Times New Roman');
-xlabel('time(sec)', 'interpreter', 'latex', 'FontSize', 24);
-ylabel('$\psi$', 'interpreter', 'latex', 'FontSize', 24);
-title('');
-axis tight
-
-
 
 
 %% Cbn calculationz
@@ -261,30 +171,31 @@ end
 %% GPS INS kalman filter
 function [position, velocity, attitude] = GPS_INS_KF(position, velocity, attitude, A, B, GPS, dt)
     %% EKF
-    global P_GPS
     %% state transition matrix
     F = eye(9) + A*dt;
     %% control matrix
     G = B*dt;
     %% covariance matrix
-    Q = 0.01*eye(6);
+    Q = 0.01*eye(9);
+    %% measurement noise
+    v = 0.01*randn(6, 1);
     %% state prediction
-    x = zeros(9,1);   
+    x = F*[position; velocity; attitude] + G*[0; 0; 0; 0; 0; 0; 0; 0; 0];   
     %% covariance prediction
-    P_GPS = F*P_GPS*F' + G*Q*G';
+    P = F*Q*F' + G*Q*G';
     %% measurement matrix
     H = [eye(3), zeros(3, 6);
         zeros(3, 3), eye(3), zeros(3, 3)];
     %% measurement prediction
-    z = H*x;
+    z = H*x + v;
     %% measurement covariance
-    R = 1*eye(6);
+    R = 0.01*eye(6);
     %% Kalman gain
-    K = P_GPS*H'/(H*P_GPS*H'+R);
+    K = P*H'/(H*P*H'+R);
     %% state update
     x = x + K*(z - H*x);
     %% covariance update
-    P_GPS = (eye(9) - K*H)*P_GPS;
+    P = (eye(9) - K*H)*P;
     %% output
     position = x(1:3);
     velocity = x(4:6);
