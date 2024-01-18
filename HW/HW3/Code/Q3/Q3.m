@@ -10,6 +10,7 @@ az = a(:,3);
 
 theta = atan2(ax,sqrt(ay.^2+az.^2));
 theta = [time', theta];
+u = [time', u];
 
 
 

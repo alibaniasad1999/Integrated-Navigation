@@ -259,7 +259,7 @@ end
 
 
 %% GPS INS kalman filter
-function [position, velocity, attitude] = GPS_INS_KF(position, velocity, attitude, A, B, GPS, dt)
+function [position, velocity, attitude] = GPS_INS_KF(~, ~, ~, A, B, GPS, dt)
     %% EKF
     global P_GPS
     %% state transition matrix
@@ -276,13 +276,13 @@ function [position, velocity, attitude] = GPS_INS_KF(position, velocity, attitud
     H = [eye(3), zeros(3, 6);
         zeros(3, 3), eye(3), zeros(3, 3)];
     %% measurement prediction
-    z = H*x;
+    z = GPS;
     %% measurement covariance
     R = 1*eye(6);
     %% Kalman gain
     K = P_GPS*H'/(H*P_GPS*H'+R);
     %% state update
-    x = x + K*(z - H*x);
+    x = x + K*(z);
     %% covariance update
     P_GPS = (eye(9) - K*H)*P_GPS;
     %% output
