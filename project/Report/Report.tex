@@ -77,36 +77,77 @@ ar.sharifi@sharif.edu}
         \caption{Structure of the network method I.}
     \end{figure}
     \begin{figure}[H]
-        \centerline{\includegraphics[width=0.5\textwidth]{../Figures/part_1_roll_no_AI.png}}
+        \centerline{\includegraphics[width=0.45\textwidth]{../Figures/part_1_roll_no_AI.png}}
         \caption{Roll angle without AI.}
     \end{figure}
     \begin{figure}[H]
-        \centerline{\includegraphics[width=0.5\textwidth]{../Figures/part_1_pitch_no_AI.png}}
+        \centerline{\includegraphics[width=0.45\textwidth]{../Figures/part_1_pitch_no_AI.png}}
         \caption{Pitch angle without AI.}
     \end{figure}
     \begin{figure}[H]
-        \centerline{\includegraphics[width=0.5\textwidth]{../Figures/part_1_yaw_no_AI.png}}
+        \centerline{\includegraphics[width=0.45\textwidth]{../Figures/part_1_yaw_no_AI.png}}
         \caption{Yaw angle without AI.}
     \end{figure}
     \begin{figure}[H]
-        \centerline{\includegraphics[width=0.5\textwidth]{../Figures/part_1_roll_AI.png}}
+        \centerline{\includegraphics[width=0.45\textwidth]{../Figures/part_1_roll_AI.png}}
         \caption{Roll angle with AI.}
     \end{figure}
     \begin{figure}[H]
-        \centerline{\includegraphics[width=0.5\textwidth]{../Figures/part_1_pitch_AI.png}}
+        \centerline{\includegraphics[width=0.45\textwidth]{../Figures/part_1_pitch_AI.png}}
         \caption{Pitch angle with AI.}
     \end{figure}
     \begin{figure}[H]
-        \centerline{\includegraphics[width=0.5\textwidth]{../Figures/part_1_yaw_AI.png}}
+        \centerline{\includegraphics[width=0.45\textwidth]{../Figures/part_1_yaw_AI.png}}
         \caption{Yaw angle with AI.}
     \end{figure}
-    
+
     \section{Network calculating attitude}
     In this section, we present a method to improve the performance of the integrated navigation system. In this method, we use a deep neural network to calculate the attitude of the system. In this scenario gyroscope had time-variant bias. Here is the results and comparison of the performance of the integrated navigation system with and without the proposed method. The results show that the proposed method can improve the performance of the integrated navigation system. Here is the structure of the network. The network is trained by a LSTM network.
     \begin{figure}[H]
         \centerline{\includegraphics[width=0.5\textwidth]{../Figures/part_2_network.png}}
         \caption{Structure of the network method II.}
     \end{figure}
-    
+    \begin{figure}[H]
+        \centerline{\includegraphics[width=0.45\textwidth]{../Figures/part_2.png}}
+        \caption{Results with AI.}
+    \end{figure}
+
+    \section{Network calculating attitude without magnetometer}
+    In this section, we present a method to improve the performance of the integrated navigation system. In this method, we use a deep neural network to calculate the attitude of the system. In this scenario gyroscope had time-variant bias. Here is the results and shows the AHRS has a good performance in the absent of magnetometer. The results show that the proposed method can improve the performance of the integrated navigation system. Here is the structure of the network. The network is trained by a LSTM network.
+    \begin{figure}[H]
+        \centerline{\includegraphics[width=0.5\textwidth]{../Figures/part_3_network_train.png}}
+        \caption{Structure of the network in training method III with magnetometer}
+    \end{figure}
+    \begin{figure}[H]
+        \centerline{\includegraphics[width=0.5\textwidth]{../Figures/part_3_network_predict.png}}
+        \caption{Structure of the network in predict method III.}
+    \end{figure}
+    \begin{figure}[H]
+        \centerline{\includegraphics[width=0.45\textwidth]{../Figures/part_3_phi.png}}
+        \caption{Roll angle with AI.}
+    \end{figure}
+    \begin{figure}[H]
+        \centerline{\includegraphics[width=0.45\textwidth]{../Figures/part_3_theta.png}}
+        \caption{Pitch angle with AI.}
+    \end{figure}
+    \begin{figure}[H]
+        \centerline{\includegraphics[width=0.45\textwidth]{../Figures/part_3_psi.png}}
+        \caption{Yaw angle with AI.}
+    \end{figure}
+
+    \section{Network calculating attitude without GPS}
+    In this section, we present a method to improve the performance of the integrated navigation system. In this method, we use a deep neural network to calculate the attitude of the system. In this scenario gyroscope had time-variant bias. Here is the results and shows the AHRS has a good performance in the absent of GPS. The results show that the proposed method can improve the performance of the integrated navigation system. Here is the structure of the network. The network is trained by a LSTM network.
+
+
+    \begin{figure}[H]
+        \centerline{\includegraphics[width=0.5\textwidth]{../Figures/part_3_network_train_GPS.png}}
+        \caption{Structure of the network in training method III with GPS}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centerline{\includegraphics[width=0.5\textwidth]{../Figures/part_3_network_predict.png}}
+        \caption{Structure of the network in predict method III.}
+    \end{figure}
+
 
 \end{document}
